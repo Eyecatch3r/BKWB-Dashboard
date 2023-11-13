@@ -4,6 +4,10 @@ import iconv from 'iconv-lite';
 
 export async function GET() {
     try {
+        // Check if the environment variables are defined
+        if (!process.env.BKWB_USERNAME || !process.env.BKWB_PASSWORD) {
+            throw new Error('BKWB_USERNAME or BKWB_PASSWORD is not defined');
+        }
         const response = await axios.get(
             "https://webdav.bkwb.org/Groups/Domain Admins/Monitoring/Rohdaten/APMonitor.csv",
             {
@@ -28,7 +32,7 @@ export async function GET() {
         });
 
         return Response.json(parsedData);
-    } catch (error) {
+    } catch (error: any) {
         console.error('Error fetching or parsing CSV:', error.message);
         return Response.json({ error: error.message });
     }
