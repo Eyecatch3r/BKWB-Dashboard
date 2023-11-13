@@ -29,53 +29,56 @@ export default function APMonitor() {
     console.log(data)
 
     return (
-        <div className={"grid grid-cols-1 content-center"}>
+        <div className={"sm:grid grid-cols-1 content-center"}>
             {data ? (
-                <table className={"text-center"}>
-                    <thead>
-                    <tr>
-                        <th>ID</th>
-                        <th>Raum</th>
-                        <th>Gebäude</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    {data.map((row, index) => (
-                        <tr key={index}>
-                            {Object.entries(row).map(([key, value]) => {
-                                const trimmedValue = value.trim();
-                                const trimmedValueArray = trimmedValue.split(" ");
-                                return (
-                                    <td key={key}>
-                                        {trimmedValueArray[0]}
-                                    </td>
-                                );
-                            })}
-                            {Object.entries(row).map(([key, value]) => {
-                                const trimmedValue = value.trim();
-                                const trimmedValueArray = trimmedValue.split(" ");
-                                return (
-                                    <td key={key}>
-                                        {trimmedValueArray[3]}
-                                    </td>
-                                );
-                            })}
-                            {Object.entries(row).map(([key, value]) => {
-                                const trimmedValue = value.trim();
-                                const trimmedValueArray = trimmedValue.split(" ");
-                                return (
-                                    <td key={key}>
-                                        {trimmedValueArray[8]}
-                                    </td>
-                                );
-                            })}
+                <div className="overflow-x-auto">
+                    <table className={"min-w-full"}>
+                        <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Raum</th>
+                            <th>Gebäude</th>
                         </tr>
-                    ))}
-                    </tbody>
-                </table>
+                        </thead>
+                        <tbody>
+                        {data.map((row, index) => (
+                            <tr key={index}>
+                                {Object.entries(row).map(([key, value]) => {
+                                    const trimmedValue = value.trim();
+                                    const trimmedValueArray = trimmedValue.split(" ");
+                                    return (
+                                        <td key={key}>
+                                            {trimmedValueArray[0]}
+                                        </td>
+                                    );
+                                })}
+                                {Object.entries(row).map(([key, value]) => {
+                                    const trimmedValue = value.trim();
+                                    const trimmedValueArray = trimmedValue.split(" ");
+                                    return (
+                                        <td key={key}>
+                                            {trimmedValueArray[3]}
+                                        </td>
+                                    );
+                                })}
+                                {Object.entries(row).map(([key, value]) => {
+                                    const trimmedValue = value.trim();
+                                    const trimmedValueArray = trimmedValue.split(" ");
+                                    return (
+                                        <td key={key}>
+                                            {trimmedValueArray[8]}
+                                        </td>
+                                    );
+                                })}
+                            </tr>
+                        ))}
+                        </tbody>
+                    </table>
+                </div>
             ) : (
                 <div>Loading...</div>
             )}
         </div>
     );
+
 }
