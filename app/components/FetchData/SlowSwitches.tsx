@@ -17,8 +17,8 @@ const fetcher = async (url) => {
     return response.json();
 };
 
-export default function APMonitor() {
-    const {data: data, error} = useSWR('/api/apmonitor', fetcher);
+export default function SlowSwitches() {
+    const {data: data, error} = useSWR('/api/slowswitches', fetcher);
 
     if (error) {
         console.log(error)

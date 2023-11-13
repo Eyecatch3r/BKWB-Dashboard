@@ -2,18 +2,22 @@
 import { Fragment } from 'react'
 import { Disclosure, Menu, Transition } from '@/node_modules/@headlessui/react'
 import { Bars3Icon, BellIcon, XMarkIcon } from '@heroicons/react/24/outline'
-
-const navigation = [
-    { name: 'Dashboard', href: '/', current: true },
-    { name: 'Monitor Activity', href: '#', current: false },
-    { name: 'Slow Switches', href: '#', current: false },
-]
+import {usePathname} from "next/navigation";
 
 function classNames(...classes) {
-    return classes.filter(Boolean).join(' ')
-}
+        return classes.filter(Boolean).join(' ');
+    }
+
 
 export default function navbar() {
+    // eslint-disable-next-line react-hooks/rules-of-hooks
+    const pathname = usePathname();
+    // Define your navigation links
+    const navigation = [
+        { name: 'Dashboard', href: '/', current: pathname === '/' },
+        { name: 'Monitor Activity', href: '/MonitorActivity', current: pathname === '/MonitorActivity' },
+        { name: 'Slow Switches', href: '/SlowSwitches', current: pathname === '/SlowSwitches' },
+    ];
     return (
         <Disclosure as="nav" className="bg-gray-800 dark:bg-gray-700">
         {({ open }) => (
