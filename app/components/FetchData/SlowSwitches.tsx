@@ -19,14 +19,11 @@ const fetcher = async (url) => {
 
 export default function SlowSwitches() {
     const {data: data, error} = useSWR('/api/slowswitches', fetcher);
-
     if (error) {
         console.log(error)
         console.error('Error fetching data:', error);
         return <div>Error fetching data</div>;
     }
-
-    console.log(data)
 
     return (
         <div className={"sm:grid grid-cols-1 content-center"}>
@@ -38,6 +35,7 @@ export default function SlowSwitches() {
                             <th>ID</th>
                             <th>Raum</th>
                             <th>Gebäude</th>
+                            <th>Latenz</th>
                         </tr>
                         </thead>
                         <tbody>
@@ -51,6 +49,9 @@ export default function SlowSwitches() {
                                 </td>
                                 <td className={"td"} key={Object.keys(row)[0]}>
                                     {row[Object.keys(row)[0]].trim().split(" ")[8]}
+                                </td>
+                                <td className={"td"} key={Object.keys(row)[0]}>
+                                    {row[Object.keys(row)[0]].trim().split(" ")[14]}
                                 </td>
                             </tr>
                         ))}

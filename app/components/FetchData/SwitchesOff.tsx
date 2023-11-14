@@ -1,5 +1,6 @@
 'use client'
 import useSWR from 'swr';
+import {debug} from "util";
 
 const fetcher = async (url) => {
     const response = await fetch(url, {
@@ -17,9 +18,17 @@ const fetcher = async (url) => {
     return response.json();
 };
 
-export default function APMonitor() {
-    const {data: data, error} = useSWR('/api/apmonitor', fetcher);
+function isEmpty(data) {
+    let currentRow;
+    data.map(row => {
+       currentRow = row[Object.keys(row)[0]]
+    })
 
+    return !!currentRow
+}
+
+export default function SlowSwitches() {
+    const {data: data, error} = useSWR('/api/switchesoff', fetcher);
     if (error) {
         console.log(error)
         console.error('Error fetching data:', error);
@@ -29,37 +38,44 @@ export default function APMonitor() {
     return (
         <div className={"sm:grid grid-cols-1 content-center"}>
             {data ? (
-                <div className="overflow-x-auto">
-                    <table className={"min-w-full"}>
+                <div className="overflow-x-hidden">
+                    {isEmpty(data)? (<table className={"min-w-full"}>
                         <thead>
                         <tr>
                             <th>ID</th>
                             <th>Raum</th>
                             <th>Gebäude</th>
+                            <th>IP</th>
+                            <th>OffZeit</th>
+                            <th>OffDatum</th>
+                            <th>AktZeit</th>
+                            <th>AktDatum</th>
                         </tr>
                         </thead>
                         <tbody>
                         {data.map((row, index) => (
                             <tr key={index}>
                                 <td className={"td"} key={Object.keys(row)[0]}>
-                                    {row[Object.keys(row)[0]].trim().split(" ")[0]}
+                                    {row[Object.keys(row)[0]] ? row[Object.keys(row)[0]].trim().split(",")[0] : "Alle Erreichbar"}
                                 </td>
                                 <td className={"td"} key={Object.keys(row)[0]}>
-                                    {row[Object.keys(row)[0]].trim().split(" ")[3]}
+                                    {row[Object.keys(row)[1]] ? row[Object.keys(row)[1]].trim().split(",")[0] : ""}
                                 </td>
                                 <td className={"td"} key={Object.keys(row)[0]}>
-                                    {row[Object.keys(row)[0]].trim().split(" ")[8]}
+                                    {row[Object.keys(row)[2]] ? row[Object.keys(row)[2]].trim().split(",")[0] : ""}
+                                </td>
+                                <td className={"td"} key={Object.keys(row)[0]}>
+                                    {row[Object.keys(row)[3]] ? row[Object.keys(row)[3]].trim().split(",")[0] : ""}
                                 </td>
                             </tr>
                         ))}
                         </tbody>
-                    </table>
+                    </table> ): (<p>Alles Erreichbar</p>)}
                 </div>
             ) : (
                 <div>Loading...</div>
             )}
         </div>
     );
-
 
 }
