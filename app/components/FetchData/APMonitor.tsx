@@ -43,33 +43,15 @@ export default function APMonitor() {
                         <tbody>
                         {data.map((row, index) => (
                             <tr key={index}>
-                                {Object.entries(row).map(([key, value]) => {
-                                    const trimmedValue = value.trim();
-                                    const trimmedValueArray = trimmedValue.split(" ");
-                                    return (
-                                        <td key={key}>
-                                            {trimmedValueArray[0]}
-                                        </td>
-                                    );
-                                })}
-                                {Object.entries(row).map(([key, value]) => {
-                                    const trimmedValue = value.trim();
-                                    const trimmedValueArray = trimmedValue.split(" ");
-                                    return (
-                                        <td key={key}>
-                                            {trimmedValueArray[3]}
-                                        </td>
-                                    );
-                                })}
-                                {Object.entries(row).map(([key, value]) => {
-                                    const trimmedValue = value.trim();
-                                    const trimmedValueArray = trimmedValue.split(" ");
-                                    return (
-                                        <td key={key}>
-                                            {trimmedValueArray[8]}
-                                        </td>
-                                    );
-                                })}
+                                <td className={"td"} key={Object.keys(row)[0]}>
+                                    {row[Object.keys(row)[0]].trim().split(" ")[0]}
+                                </td>
+                                <td className={"td"} key={Object.keys(row)[0]}>
+                                    {row[Object.keys(row)[0]].trim().split(" ")[3]}
+                                </td>
+                                <td className={"td"} key={Object.keys(row)[0]}>
+                                    {row[Object.keys(row)[0]].trim().split(" ")[8]}
+                                </td>
                             </tr>
                         ))}
                         </tbody>
@@ -80,5 +62,6 @@ export default function APMonitor() {
             )}
         </div>
     );
+
 
 }

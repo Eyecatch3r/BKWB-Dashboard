@@ -17,6 +17,7 @@ export default function navbar() {
         { name: 'Dashboard', href: '/', current: pathname === '/' },
         { name: 'Monitor Activity', href: '/MonitorActivity', current: pathname === '/MonitorActivity' },
         { name: 'Slow Switches', href: '/SlowSwitches', current: pathname === '/SlowSwitches' },
+        { name: 'Check Devices', href: '/IPOnOff', current: pathname === '/IPOnOff' },
     ];
     return (
         <Disclosure as="nav" className="bg-gray-800 dark:bg-gray-700">

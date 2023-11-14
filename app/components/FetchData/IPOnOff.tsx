@@ -17,40 +17,45 @@ const fetcher = async (url) => {
     return response.json();
 };
 
-export default function SlowSwitches() {
-    const {data: data, error} = useSWR('/api/slowswitches', fetcher);
+export default function IPOnOff() {
+    const { data, error } = useSWR('/api/iponoff', fetcher);
 
     if (error) {
-        console.log(error)
         console.error('Error fetching data:', error);
         return <div>Error fetching data</div>;
     }
 
-    console.log(data)
-
     return (
         <div className={"sm:grid grid-cols-1 content-center"}>
             {data ? (
-                <div className="overflow-x-hidden">
+                <div className="overflow-x-auto">
                     <table className={"min-w-full"}>
                         <thead>
                         <tr>
-                            <th>ID</th>
-                            <th>Raum</th>
-                            <th>Gebäude</th>
+                            <th>Ort</th>
+                            <th>Computer An</th>
+                            <th>Computer Aus</th>
+                            <th>Start Zeit</th>
+                            <th>End Zeit</th>
                         </tr>
                         </thead>
                         <tbody>
                         {data.map((row, index) => (
                             <tr key={index}>
                                 <td className={"td"} key={Object.keys(row)[0]}>
-                                    {row[Object.keys(row)[0]].trim().split(" ")[0]}
+                                    {row[Object.keys(row)[2]].trim().split(",")[0]}
                                 </td>
-                                <td className={"td"} key={Object.keys(row)[0]}>
-                                    {row[Object.keys(row)[0]].trim().split(" ")[3]}
+                                <td className={"td"} key={Object.keys(row)[1]}>
+                                    {row[Object.keys(row)[0]].trim().split(",")[0]}
                                 </td>
-                                <td className={"td"} key={Object.keys(row)[0]}>
-                                    {row[Object.keys(row)[0]].trim().split(" ")[8]}
+                                <td className={"td"} key={Object.keys(row)[2]}>
+                                    {row[Object.keys(row)[1]].trim().split(",")[0]}
+                                </td>
+                                <td className={"td"} key={Object.keys(row)[3]}>
+                                    {row[Object.keys(row)[3]].trim().split(",")[0]}
+                                </td>
+                                <td className={"td"} key="4">
+                                    {row[Object.keys(row)[4]].trim().split(",")[0]}
                                 </td>
                             </tr>
                         ))}
