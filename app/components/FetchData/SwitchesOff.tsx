@@ -39,7 +39,7 @@ export default function SlowSwitches() {
         <div className={"sm:grid grid-cols-1 content-center"}>
             {data ? (
                 <div className="overflow-x-hidden">
-                    {isEmpty(data)? (<table className={"min-w-full"}>
+                    {isEmpty(data)? (<div><table className={"min-w-full"}>
                         <thead>
                         <tr>
                             <th>ID</th>
@@ -70,7 +70,14 @@ export default function SlowSwitches() {
                             </tr>
                         ))}
                         </tbody>
-                    </table> ): (<p>Alles Erreichbar</p>)}
+                    </table>
+                        <div className="inline-flex items-center justify-center w-full">
+                            <hr className="w-64 h-1 my-8 bg-gray-200 border-0 rounded dark:bg-gray-700"></hr>
+                        </div>
+                        <div className="inline-flex items-center justify-center w-full">
+                        <h3 className={"bold"}>Anzahl: {data.length - 1}</h3>
+                        </div>
+                    </div>): (<p>Alles Erreichbar</p>)}
                 </div>
             ) : (
                 <div>Loading...</div>

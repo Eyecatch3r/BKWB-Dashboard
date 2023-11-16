@@ -9,7 +9,7 @@ export async function GET() {
             throw new Error('BKWB_USERNAME or BKWB_PASSWORD is not defined');
         }
         const response = await axios.get(
-            "https://webdav.bkwb.org/Groups/Domain Admins/Monitoring/Rohdaten/combined.csv",
+            "https://webdav.bkwb.org/Groups/Domain Admins/ComputerÜberwachung/projekt 1/HTML/combined.csv",
             {
                 auth: {
                     username: process.env.BKWB_USERNAME,

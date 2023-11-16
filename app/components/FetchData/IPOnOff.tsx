@@ -43,19 +43,19 @@ export default function IPOnOff() {
                         {data.map((row, index) => (
                             <tr key={index}>
                                 <td className={"td"} key={Object.keys(row)[0]}>
-                                    {row[Object.keys(row)[2]].trim().split(",")[0]}
+                                    {row[Object.keys(row)[2]]}
                                 </td>
                                 <td className={"td"} key={Object.keys(row)[1]}>
-                                    {row[Object.keys(row)[0]].trim().split(",")[0]}
+                                    {row[Object.keys(row)[0]]}
                                 </td>
                                 <td className={"td"} key={Object.keys(row)[2]}>
-                                    {row[Object.keys(row)[1]].trim().split(",")[0]}
+                                    {row[Object.keys(row)[1]]}
                                 </td>
                                 <td className={"td"} key={Object.keys(row)[3]}>
-                                    {row[Object.keys(row)[3]].trim().split(",")[0]}
+                                    {row[Object.keys(row)[3]]}
                                 </td>
                                 <td className={"td"} key="4">
-                                    {row[Object.keys(row)[4]].trim().split(",")[0]}
+                                    {row[Object.keys(row)[4]]}
                                 </td>
                             </tr>
                         ))}

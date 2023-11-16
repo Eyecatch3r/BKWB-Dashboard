@@ -1,6 +1,6 @@
 'use client'
 import useSWR from 'swr';
-
+import horizontalLine from "@/app/components/horizontalLine";
 const fetcher = async (url) => {
     const response = await fetch(url, {
         method: 'GET',
@@ -54,6 +54,13 @@ export default function APMonitor() {
                         ))}
                         </tbody>
                     </table>
+                    <horizontalLine data={data} ></horizontalLine>
+                    <div className="inline-flex items-center justify-center w-full">
+                        <hr className="w-64 h-1 my-8 bg-gray-200 border-0 rounded dark:bg-gray-700"></hr>
+                    </div>
+                    <div className="inline-flex items-center justify-center w-full">
+                        <h3 className={"bold"}>Anzahl: {data.length - 1}</h3>
+                    </div>
                 </div>
             ) : (
                 <div>Loading...</div>
