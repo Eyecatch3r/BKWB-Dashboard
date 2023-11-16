@@ -31,17 +31,6 @@ export default function Home() {
                 </a>
 
                 <a
-                    href="/SwitchesOff"
-                    className="w-max h-full sm:max-w-sm mx-2 p-6 bg-white border border-gray-200 rounded-lg shadow hover:bg-gray-100 dark:bg-gray-900 dark:border-gray-800 dark:hover:bg-gray-900 opacity-0 animate-fade-in transition-opacity duration-1500 hover:opacity-100 hover:shadow-md hover:ring-1 hover:ring-blue-500 hover:bg-opacity-80"
-                >
-                    <h5 className="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white text-center">Ausgefallene Switches</h5>
-                    <div className="inline-flex items-center justify-center w-full">
-                        <hr className="w-64 h-1 my-8 bg-gray-200 border-0 rounded dark:bg-gray-700"></hr>
-                    </div>
-                    <SwitchesOff></SwitchesOff>
-                </a>
-
-                <a
                     href="/IPOnOff"
                     className="w-max h-full sm:max-w-sm mx-2 p-6 bg-white border border-gray-200 rounded-lg shadow hover:bg-gray-100 dark:bg-gray-900 dark:border-gray-800 dark:hover:bg-gray-900 opacity-0 animate-fade-in transition-opacity duration-1500 hover:opacity-100 hover:shadow-md hover:ring-1 hover:ring-blue-500 hover:bg-opacity-80"
                 >
@@ -52,7 +41,16 @@ export default function Home() {
                     <IPOnOff></IPOnOff>
                 </a>
 
-
+                <a
+                    href="/SwitchesOff"
+                    className="w-max h-full sm:max-w-sm mx-2 p-6 bg-white border border-gray-200 rounded-lg shadow hover:bg-gray-100 dark:bg-gray-900 dark:border-gray-800 dark:hover:bg-gray-900 opacity-0 animate-fade-in transition-opacity duration-1500 hover:opacity-100 hover:shadow-md hover:ring-1 hover:ring-blue-500 hover:bg-opacity-80"
+                >
+                    <h5 className="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white text-center">Ausgefallene Switches</h5>
+                    <div className="inline-flex items-center justify-center w-full">
+                        <hr className="w-64 h-1 my-8 bg-gray-200 border-0 rounded dark:bg-gray-700"></hr>
+                    </div>
+                    <SwitchesOff></SwitchesOff>
+                </a>
             </div>
         </main>
 
