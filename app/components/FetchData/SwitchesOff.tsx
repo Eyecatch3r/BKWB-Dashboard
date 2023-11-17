@@ -1,8 +1,10 @@
 'use client'
+import { Key } from 'react';
 import useSWR from 'swr';
+import {RequestInfo} from 'undici-types';
 import {debug} from "util";
 
-const fetcher = async (url) => {
+const fetcher = async (url: RequestInfo) => {
     const response = await fetch(url, {
         method: 'GET',
         headers: {
@@ -18,10 +20,10 @@ const fetcher = async (url) => {
     return response.json();
 };
 
-function isEmpty(data) {
+function isEmpty(data: any[]) {
     let currentRow;
     data.map(row => {
-       currentRow = row[Object.keys(row)[0]]
+        currentRow = row[Object.keys(row)[0]]
     })
 
     return !!currentRow
@@ -37,23 +39,24 @@ export default function SlowSwitches() {
 
     return (
         <div className={"sm:grid grid-cols-1 content-center"}>
-            {data ? (
+            {data ? ( !data.error ? (
                 <div className="overflow-x-hidden">
-                    {isEmpty(data)? (<div><table className={"min-w-full"}>
-                        <thead>
-                        <tr>
-                            <th>ID</th>
-                            <th>Raum</th>
-                            <th>Gebäude</th>
-                            <th>IP</th>
-                            <th>OffZeit</th>
-                            <th>OffDatum</th>
-                            <th>AktZeit</th>
-                            <th>AktDatum</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        {data.map((row, index) => (
+                    {isEmpty(data) ? (<div>
+                        <table className={"min-w-full"}>
+                            <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Raum</th>
+                                <th>Gebäude</th>
+                                <th>IP</th>
+                                <th>OffZeit</th>
+                                <th>OffDatum</th>
+                                <th>AktZeit</th>
+                                <th>AktDatum</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {data.map((row: { [x: string]: string; }, index: Key | null | undefined) => (
                             <tr key={index}>
                                 <td className={"td"} key={Object.keys(row)[0]}>
                                     {row[Object.keys(row)[0]] ? row[Object.keys(row)[0]].trim().split(",")[0] : "Alle Erreichbar"}
@@ -80,8 +83,8 @@ export default function SlowSwitches() {
                     </div>): (<p>Alles Erreichbar</p>)}
                 </div>
             ) : (
-                <div>Loading...</div>
-            )}
+                <div> {error} </div>
+            )) : (<div>Loading...</div>)}
         </div>
     );
 

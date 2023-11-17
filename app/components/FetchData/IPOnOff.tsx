@@ -1,7 +1,9 @@
 'use client'
+import { ReactElement, JSXElementConstructor, ReactNode, ReactPortal, PromiseLikeOfReactNode, Key } from 'react';
 import useSWR from 'swr';
+import {RequestInfo} from 'undici-types';
 
-const fetcher = async (url) => {
+const fetcher = async (url: RequestInfo) => {
     const response = await fetch(url, {
         method: 'GET',
         headers: {
@@ -18,7 +20,7 @@ const fetcher = async (url) => {
 };
 
 export default function IPOnOff() {
-    const { data, error } = useSWR('/api/iponoff', fetcher);
+    const {data, error} = useSWR('/api/iponoff', fetcher);
 
     if (error) {
         console.error('Error fetching data:', error);
@@ -27,7 +29,7 @@ export default function IPOnOff() {
 
     return (
         <div className={"sm:grid grid-cols-1 content-center"}>
-            {data ? (
+            {data ? ( !data.error ? (
                 <div className="overflow-x-auto">
                     <table className={"min-w-full"}>
                         <thead>
@@ -40,7 +42,9 @@ export default function IPOnOff() {
                         </tr>
                         </thead>
                         <tbody>
-                        {data.map((row, index) => (
+                        {data.map((row: {
+                            [x: string]: string | number | boolean | ReactElement<any, string | JSXElementConstructor<any>> | Iterable<ReactNode> | ReactPortal | PromiseLikeOfReactNode | null | undefined;
+                        }, index: Key | null | undefined) => (
                             <tr key={index}>
                                 <td className={"td"} key={Object.keys(row)[0]}>
                                     {row[Object.keys(row)[2]]}
@@ -63,6 +67,8 @@ export default function IPOnOff() {
                     </table>
                 </div>
             ) : (
+                <div></div>
+            )) : (
                 <div>Loading...</div>
             )}
         </div>

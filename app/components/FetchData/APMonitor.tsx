@@ -1,7 +1,10 @@
 'use client'
 import useSWR from 'swr';
 import horizontalLine from "@/app/components/horizontalLine";
-const fetcher = async (url) => {
+import { Key } from 'react';
+import { RequestInfo } from 'undici-types';
+
+const fetcher = async (url: RequestInfo) => {
     const response = await fetch(url, {
         method: 'GET',
         headers: {
@@ -28,7 +31,7 @@ export default function APMonitor() {
 
     return (
         <div className={"sm:grid grid-cols-1 content-center"}>
-            {data ? (
+            {data ? (!data.error ? (
                 <div className="overflow-x-auto">
                     <table className={"min-w-full"}>
                         <thead>
@@ -39,7 +42,7 @@ export default function APMonitor() {
                         </tr>
                         </thead>
                         <tbody>
-                        {data.map((row, index) => (
+                        {data.map((row: { [x: string]: string; }, index: Key | null | undefined) => (
                             <tr key={index}>
                                 <td className={"td"} key={Object.keys(row)[0]}>
                                     {row[Object.keys(row)[0]].trim().split(" ")[0]}
@@ -54,7 +57,6 @@ export default function APMonitor() {
                         ))}
                         </tbody>
                     </table>
-                    <horizontalLine data={data} ></horizontalLine>
                     <div className="inline-flex items-center justify-center w-full">
                         <hr className="w-64 h-1 my-8 bg-gray-200 border-0 rounded dark:bg-gray-700"></hr>
                     </div>
@@ -64,7 +66,7 @@ export default function APMonitor() {
                 </div>
             ) : (
                 <div>Loading...</div>
-            )}
+            )): (<div>Loading...</div>)}
         </div>
     );
 

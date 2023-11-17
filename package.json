@@ -16,6 +16,7 @@
     "csv-parse": "^5.5.2",
     "iconv-lite": "^0.6.3",
     "next": "^14.0.2",
+    "next.js": "^1.0.3",
     "papaparse": "^5.4.1",
     "parse5": "^7.1.2",
     "react": "^18.2.0",

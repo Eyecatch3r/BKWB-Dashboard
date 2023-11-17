@@ -1,7 +1,9 @@
 'use client'
+import { Key } from 'react';
 import useSWR from 'swr';
+import {RequestInfo} from 'undici-types';
 
-const fetcher = async (url) => {
+const fetcher = async (url: RequestInfo) => {
     const response = await fetch(url, {
         method: 'GET',
         headers: {
@@ -27,7 +29,7 @@ export default function SlowSwitches() {
 
     return (
         <div className={"sm:grid grid-cols-1 content-center"}>
-            {data ? (
+            {data ? ( !data.error ? (
                 <div className="overflow-x-hidden">
                     <table className={"min-w-full"}>
                         <thead>
@@ -39,7 +41,7 @@ export default function SlowSwitches() {
                         </tr>
                         </thead>
                         <tbody>
-                        {data.map((row, index) => (
+                        {data.map((row: { [x: string]: string; }, index: Key | null | undefined) => (
                             <tr key={index}>
                                 <td className={"td"} key={Object.keys(row)[0]}>
                                     {row[Object.keys(row)[0]].trim().split(" ")[0]}
@@ -66,7 +68,7 @@ export default function SlowSwitches() {
                 </div>
             ) : (
                 <div>Loading...</div>
-            )}
+            )) : (<div>Loading...</div>)}
         </div>
     );
 
