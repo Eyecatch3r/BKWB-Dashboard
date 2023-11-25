@@ -22,7 +22,7 @@ export async function GET() {
         // Parse CSV data using csv-parse
         const parsedData = await new Promise((resolve, reject) => {
             const decodedData = iconv.decode(Buffer.from(response.data), 'utf-16le');
-            parse(decodedData, { columns: true, trim: true }, (err, records) => {
+            parse(decodedData, {relax_column_count: true, columns: true, trim: true }, (err, records) => {
                 if (err) {
                     reject(err);
                 } else {

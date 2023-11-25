@@ -21,7 +21,9 @@ const fetcher = async (url: RequestInfo) => {
 };
 
 export default function APMonitor() {
-    const {data: data, error} = useSWR('/api/apmonitor', fetcher);
+    const { data, error } = useSWR('/api/apmonitor', fetcher, {
+        revalidateOnMount: true,
+    });
 
     if (error) {
         console.log(error)

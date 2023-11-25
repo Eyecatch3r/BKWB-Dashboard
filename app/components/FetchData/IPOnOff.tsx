@@ -1,5 +1,5 @@
 'use client'
-import { ReactElement, JSXElementConstructor, ReactNode, ReactPortal, PromiseLikeOfReactNode, Key } from 'react';
+import { ReactElement, JSXElementConstructor, ReactNode, ReactPortal, Key } from 'react';
 import useSWR from 'swr';
 import {RequestInfo} from 'undici-types';
 
@@ -20,7 +20,9 @@ const fetcher = async (url: RequestInfo) => {
 };
 
 export default function IPOnOff() {
-    const {data, error} = useSWR('/api/iponoff', fetcher);
+    const {data, error} = useSWR('/api/iponoff', fetcher, {
+        revalidateOnMount: true,
+    });
 
     if (error) {
         console.error('Error fetching data:', error);
@@ -42,9 +44,7 @@ export default function IPOnOff() {
                         </tr>
                         </thead>
                         <tbody>
-                        {data.map((row: {
-                            [x: string]: string | number | boolean | ReactElement<any, string | JSXElementConstructor<any>> | Iterable<ReactNode> | ReactPortal | PromiseLikeOfReactNode | null | undefined;
-                        }, index: Key | null | undefined) => (
+                        {data.map((row,index: Key | null | undefined) => (
                             <tr key={index}>
                                 <td className={"td"} key={Object.keys(row)[0]}>
                                     {row[Object.keys(row)[2]]}

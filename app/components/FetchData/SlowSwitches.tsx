@@ -20,7 +20,9 @@ const fetcher = async (url: RequestInfo) => {
 };
 
 export default function SlowSwitches() {
-    const {data: data, error} = useSWR('/api/slowswitches', fetcher);
+    const {data: data, error} = useSWR('/api/slowswitches', fetcher,{
+        revalidateOnMount: true,
+    });
     if (error) {
         console.log(error)
         console.error('Error fetching data:', error);

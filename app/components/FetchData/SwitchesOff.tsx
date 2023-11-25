@@ -30,7 +30,9 @@ function isEmpty(data: any[]) {
 }
 
 export default function SlowSwitches() {
-    const {data: data, error} = useSWR('/api/switchesoff', fetcher);
+    const {data: data, error} = useSWR('/api/switchesoff', fetcher, {
+        revalidateOnMount: true,
+    });
     if (error) {
         console.log(error)
         console.error('Error fetching data:', error);
