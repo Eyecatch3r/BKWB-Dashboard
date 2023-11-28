@@ -22,7 +22,7 @@ const fetcher = async (url: RequestInfo) => {
 
 export default function APMonitor() {
     const { data, error } = useSWR('/api/apmonitor', fetcher, {
-        revalidateOnMount: true,
+        revalidateOnMount: true, refreshInterval: 0
     });
 
     if (error) {

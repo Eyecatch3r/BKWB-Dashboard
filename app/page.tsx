@@ -5,8 +5,9 @@ import SlowSwitches from "@/app/components/FetchData/SlowSwitches";
 import IPOnOff from "@/app/components/FetchData/IPOnOff";
 import SwitchesOff from "@/app/components/FetchData/SwitchesOff"
 export default function Home() {
+
     return (
-        <main className="flex flex-col items-center p-4 sm:p-8 md:p-12 lg:p-16 dark:bg-gray-800">
+        <main className="flex flex-col items-center justify-between min-h-screen p-4 sm:p-8 md:p-12 lg:p-16 dark:bg-gray-800">
             <div className="flex flex-wrap sm:flex-row min-[1345px]:flex-nowrap p-2 sm:p-4">
                 <a
                     href="/MonitorActivity"

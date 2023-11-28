@@ -1,7 +1,8 @@
 'use client'
-import { Key } from 'react';
+import {Key, useEffect, useState} from 'react';
 import useSWR from 'swr';
 import {RequestInfo} from 'undici-types';
+import { mutate } from 'swr';
 
 const fetcher = async (url: RequestInfo) => {
     const response = await fetch(url, {
@@ -20,12 +21,12 @@ const fetcher = async (url: RequestInfo) => {
 };
 
 export default function SlowSwitches() {
-    const {data: data, error} = useSWR('/api/slowswitches', fetcher,{
-        revalidateOnMount: true,
+    const {data: data, error} = useSWR('/api/slowswitches', fetcher, {
+        revalidateOnMount: true, refreshInterval: 1000,
     });
+
     if (error) {
-        console.log(error)
-        console.error('Error fetching data:', error);
+        console.log(error);
         return <div>Error fetching data</div>;
     }
 

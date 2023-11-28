@@ -21,7 +21,7 @@ const fetcher = async (url: RequestInfo) => {
 
 export default function IPOnOff() {
     const {data, error} = useSWR('/api/iponoff', fetcher, {
-        revalidateOnMount: true,
+        revalidateOnMount: true, refreshInterval: 5000
     });
 
     if (error) {
