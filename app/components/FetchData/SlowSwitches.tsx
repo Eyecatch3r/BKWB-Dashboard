@@ -2,7 +2,6 @@
 import {Key, useEffect, useState} from 'react';
 import useSWR from 'swr';
 import {RequestInfo} from 'undici-types';
-import { mutate } from 'swr';
 
 const fetcher = async (url: RequestInfo) => {
     const response = await fetch(url, {
@@ -21,6 +20,14 @@ const fetcher = async (url: RequestInfo) => {
 };
 
 export default function SlowSwitches() {
+    const [isDarkMode, setIsDarkMode] = useState(true);
+
+    useEffect(() => {
+        // Logic to detect user's preferred color scheme
+        const prefersDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches;
+        setIsDarkMode(prefersDarkMode);
+    }, []);
+
     const {data: data, error} = useSWR('/api/slowswitches', fetcher, {
         revalidateOnMount: true, refreshInterval: 1000,
     });
@@ -70,8 +77,9 @@ export default function SlowSwitches() {
                     </div>
                 </div>
             ) : (
-                <div>Loading...</div>
-            )) : (<div>Loading...</div>)}
+                <div className={"flex justify-center"}> <l-mirage size="70" speed="2.5" color={!isDarkMode ? 'black' : 'white'}></l-mirage> </div>
+            )): (<div className={"flex justify-center"}> <l-mirage size="70" speed="2.5" color={!isDarkMode ? 'black' : 'white'}></l-mirage> </div>)}
+            <div className={"flex justify-center"}> <l-mirage size="70" speed="2.5" color={!isDarkMode ? 'black' : 'white'}></l-mirage> </div>
         </div>
     );
 

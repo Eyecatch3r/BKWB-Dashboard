@@ -1,5 +1,5 @@
 'use client'
-import { Key } from 'react';
+import {Key, useEffect, useState} from 'react';
 import useSWR from 'swr';
 import {RequestInfo} from 'undici-types';
 import {debug} from "util";
@@ -30,6 +30,14 @@ function isEmpty(data: any[]) {
 }
 
 export default function SlowSwitches() {
+    const [isDarkMode, setIsDarkMode] = useState(true);
+
+    useEffect(() => {
+        // Logic to detect user's preferred color scheme
+        const prefersDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches;
+        setIsDarkMode(prefersDarkMode);
+    }, []);
+
     const {data: data, error} = useSWR('/api/switchesoff', fetcher, {
         revalidateOnMount: true, refreshInterval: 5000,
     });
@@ -85,8 +93,9 @@ export default function SlowSwitches() {
                     </div>): (<p>Alles Erreichbar</p>)}
                 </div>
             ) : (
-                <div> {error} </div>
-            )) : (<div>Loading...</div>)}
+                <div className={"flex justify-center"}> <l-mirage size="70" speed="2.5" color={!isDarkMode ? 'black' : 'white'}></l-mirage> </div>
+            )): (<div className={"flex justify-center"}> <l-mirage size="70" speed="2.5" color={!isDarkMode ? 'black' : 'white'}></l-mirage> </div>)}
+            <div className={"flex justify-center"}> <l-mirage size="70" speed="2.5" color={!isDarkMode ? 'black' : 'white'}></l-mirage> </div>
         </div>
     );
 

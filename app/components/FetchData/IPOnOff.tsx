@@ -1,5 +1,5 @@
 'use client'
-import { ReactElement, JSXElementConstructor, ReactNode, ReactPortal, Key } from 'react';
+import {ReactElement, JSXElementConstructor, ReactNode, ReactPortal, Key, useState, useEffect} from 'react';
 import useSWR from 'swr';
 import {RequestInfo} from 'undici-types';
 
@@ -20,6 +20,14 @@ const fetcher = async (url: RequestInfo) => {
 };
 
 export default function IPOnOff() {
+    const [isDarkMode, setIsDarkMode] = useState(true);
+
+    useEffect(() => {
+        // Logic to detect user's preferred color scheme
+        const prefersDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches;
+        setIsDarkMode(prefersDarkMode);
+    }, []);
+
     const {data, error} = useSWR('/api/iponoff', fetcher, {
         revalidateOnMount: true, refreshInterval: 5000
     });
@@ -67,10 +75,9 @@ export default function IPOnOff() {
                     </table>
                 </div>
             ) : (
-                <div></div>
-            )) : (
-                <div>Loading...</div>
-            )}
+                <div className={"flex justify-center"}> <l-mirage size="70" speed="2.5" color={!isDarkMode ? 'black' : 'white'}></l-mirage> </div>
+            )): (<div className={"flex justify-center"}> <l-mirage size="70" speed="2.5" color={!isDarkMode ? 'black' : 'white'}></l-mirage> </div>)}
+            <div className={"flex justify-center"}> <l-mirage size="70" speed="2.5" color={!isDarkMode ? 'black' : 'white'}></l-mirage> </div>
         </div>
     );
 

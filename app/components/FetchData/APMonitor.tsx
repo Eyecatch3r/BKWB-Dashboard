@@ -1,7 +1,7 @@
 'use client'
 import useSWR from 'swr';
 import horizontalLine from "@/app/components/horizontalLine";
-import { Key } from 'react';
+import {Key, useEffect, useState} from 'react';
 import { RequestInfo } from 'undici-types';
 
 const fetcher = async (url: RequestInfo) => {
@@ -21,6 +21,14 @@ const fetcher = async (url: RequestInfo) => {
 };
 
 export default function APMonitor() {
+    const [isDarkMode, setIsDarkMode] = useState(true);
+
+    useEffect(() => {
+        // Logic to detect user's preferred color scheme
+        const prefersDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches;
+        setIsDarkMode(prefersDarkMode);
+    }, []);
+
     const { data, error } = useSWR('/api/apmonitor', fetcher, {
         revalidateOnMount: true, refreshInterval: 0
     });
@@ -67,8 +75,9 @@ export default function APMonitor() {
                     </div>
                 </div>
             ) : (
-                <div>Loading...</div>
-            )): (<div>Loading...</div>)}
+                <div className={"flex justify-center"}> <l-mirage size="70" speed="2.5" color={!isDarkMode ? 'black' : 'white'}></l-mirage> </div>
+            )): (<div className={"flex justify-center"}><l-mirage className={"flex justify-center"} size="70" speed="2.5" color={!isDarkMode ? 'black' : 'white'}></l-mirage></div>)}
+            {<div className={"flex justify-center"}> <l-mirage size="70" speed="2.5" color={!isDarkMode ? 'black' : 'white'}></l-mirage> </div>}
         </div>
     );
 
