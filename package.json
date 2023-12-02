@@ -17,7 +17,7 @@
     "iconv-lite": "^0.6.3",
     "install": "^0.13.0",
     "ldrs": "^1.0.1",
-    "next": "^14.0.2",
+    "next": "^14.0.3",
     "next.js": "^1.0.3",
     "npm": "^10.2.4",
     "papaparse": "^5.4.1",
@@ -33,7 +33,7 @@
     "@types/react-dom": "^18",
     "autoprefixer": "^10",
     "eslint": "^8",
-    "eslint-config-next": "14.0.0",
+    "eslint-config-next": "^14.0.3",
     "postcss": "^8",
     "tailwindcss": "^3",
     "typescript": "^5"

@@ -5,6 +5,7 @@ import React from "react";
 import Navbar from "@/app/components/navbar";
 import {useRouter} from "next/navigation";
 import {Doctype} from "domelementtype";
+import Footer from "@/app/components/Footer";
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -24,7 +25,9 @@ export default function RootLayout({
       {/* eslint-disable-next-line @next/next/no-sync-scripts */}
       <script type="module" src="https://cdn.jsdelivr.net/npm/ldrs/dist/auto/mirage.js"></script>
       <Navbar></Navbar>
-      {children}</body>
+      {children}
+      <Footer></Footer>
+      </body>
     </html>
   )
 }
