@@ -2,7 +2,7 @@
 import {ReactElement, JSXElementConstructor, ReactNode, ReactPortal, Key, useState, useEffect} from 'react';
 import useSWR from 'swr';
 import {RequestInfo} from 'undici-types';
-
+import {number} from "prop-types";
 const fetcher = async (url: RequestInfo) => {
     const response = await fetch(url, {
         method: 'GET',
@@ -21,6 +21,7 @@ const fetcher = async (url: RequestInfo) => {
 
 export default function IPOnOff() {
     const [isDarkMode, setIsDarkMode] = useState(true);
+    let [IPon,IPoff] = [0,0]
 
     useEffect(() => {
         // Logic to detect user's preferred color scheme
@@ -35,6 +36,19 @@ export default function IPOnOff() {
     if (error) {
         console.error('Error fetching data:', error);
         return <div>Error fetching data</div>;
+    }
+
+
+    function getNumberofIPOn(row) {
+        IPon += parseInt(row[Object.keys(row)[0]]);
+    }
+
+    function getNumberofIPOff(row) {
+        IPoff += parseInt(row[Object.keys(row)[1]]);
+    }
+
+    function getPercentageIPOn(){
+        return Math.floor((IPon/(IPon+IPoff))*100)
     }
 
     return (
@@ -59,9 +73,11 @@ export default function IPOnOff() {
                                 </td>
                                 <td className={"td"} key={Object.keys(row)[1]}>
                                     {row[Object.keys(row)[0]]}
+                                    {getNumberofIPOn(row)}
                                 </td>
                                 <td className={"td"} key={Object.keys(row)[2]}>
                                     {row[Object.keys(row)[1]]}
+                                    {getNumberofIPOff(row)}
                                 </td>
                                 <td className={"td"} key={Object.keys(row)[3]}>
                                     {row[Object.keys(row)[3]]}
@@ -77,6 +93,33 @@ export default function IPOnOff() {
             ) : (
                 <div className={"flex justify-center"}> <l-mirage size="70" speed="2.5" color={!isDarkMode ? 'black' : 'white'}></l-mirage> </div>
             )): (<div className={"flex justify-center"}> <l-mirage size="70" speed="2.5" color={!isDarkMode ? 'black' : 'white'}></l-mirage> </div>)}
+            <div className={"flex justify-center"}>
+                <hr className="w-64 h-1 my-8 bg-gray-200 border-0 rounded dark:bg-gray-700"></hr>
+            </div>
+            <div className={"flex justify-center mb-4"}>
+                <div className="stats shadow">
+
+                    <div className="stat place-items-center">
+                        <div className="stat-title">Devices On</div>
+                        <div className="stat-value">{IPon}</div>
+                    </div>
+
+                    <div className="stat place-items-center">
+                        <div className="stat-title">Devices Off</div>
+                        <div className="stat-value">{IPoff}</div>
+                    </div>
+                </div>
+            </div>
+            <div className={"flex justify-center mb-4"}>
+                <div className="stats shadow">
+                    <div className="stat">
+                        <div className="stat-title">Percentage</div>
+                        <div className="stat-title"><div className="radial-progress text-primary" style={{"--value":getPercentageIPOn()}} role="progressbar">{getPercentageIPOn()}%</div></div>
+                    </div>
+
+                </div>
+
+            </div>
             <div className={"flex justify-center"}> <l-mirage size="70" speed="2.5" color={!isDarkMode ? 'black' : 'white'}></l-mirage> </div>
         </div>
     );

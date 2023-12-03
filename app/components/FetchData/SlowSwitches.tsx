@@ -72,8 +72,13 @@ export default function SlowSwitches() {
                     <div className="inline-flex items-center justify-center w-full">
                         <hr className="w-64 h-1 my-8 bg-gray-200 border-0 rounded dark:bg-gray-700"></hr>
                     </div>
-                    <div className="inline-flex items-center justify-center w-full">
-                        <h3 className={"bold"}>Anzahl: {data.length - 1}</h3>
+                    <div className="flex justify-center">
+                        <div className="stats shadow">
+                            <div className="stat">
+                                <div className="stat-title">Anzahl</div>
+                                <div className="stat-value">{data.length-1}</div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             ) : (
