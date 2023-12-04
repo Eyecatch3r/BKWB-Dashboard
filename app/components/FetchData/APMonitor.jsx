@@ -2,9 +2,8 @@
 import useSWR from 'swr';
 import horizontalLine from "@/app/components/horizontalLine";
 import {Key, useEffect, useState} from 'react';
-import { RequestInfo } from 'undici-types';
 
-const fetcher = async (url: RequestInfo) => {
+const fetcher = async (url) => {
     const response = await fetch(url, {
         method: 'GET',
         headers: {
@@ -52,7 +51,7 @@ export default function APMonitor() {
                         </tr>
                         </thead>
                         <tbody>
-                        {data.map((row: { [x: string]: string; }, index: Key | null | undefined) => (
+                        {data.map((row, index) => (
                             <tr key={index}>
                                 <td className={"td"} key={Object.keys(row)[0]}>
                                     {row[Object.keys(row)[0]].trim().split(" ")[0]}

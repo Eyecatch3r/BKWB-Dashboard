@@ -4,7 +4,7 @@ import { Disclosure, Menu, Transition } from '@/node_modules/@headlessui/react'
 import { Bars3Icon, BellIcon, XMarkIcon } from '@heroicons/react/24/outline'
 import {usePathname} from "next/navigation";
 
-function classNames(...classes) {
+function classNames(...classes: string[]) {
         return classes.filter(Boolean).join(' ');
     }
 

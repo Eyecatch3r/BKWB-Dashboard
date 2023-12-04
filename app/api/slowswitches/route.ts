@@ -2,7 +2,7 @@ import axios from 'axios';
 import {parse} from 'csv-parse';
 import iconv from 'iconv-lite';
 export const dynamic = "force-dynamic";
-export async function GET(request) {
+export async function GET() {
     try {
         // Check if the environment variables are defined
         if (!process.env.BKWB_USERNAME || !process.env.BKWB_PASSWORD) {

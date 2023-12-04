@@ -1,10 +1,8 @@
 'use client'
 import {Key, useEffect, useState} from 'react';
 import useSWR from 'swr';
-import {RequestInfo} from 'undici-types';
-import {debug} from "util";
 
-const fetcher = async (url: RequestInfo) => {
+const fetcher = async (url) => {
     const response = await fetch(url, {
         method: 'GET',
         headers: {
@@ -20,7 +18,7 @@ const fetcher = async (url: RequestInfo) => {
     return response.json();
 };
 
-function isEmpty(data: any[]) {
+function isEmpty(data) {
     let currentRow;
     data.map(row => {
         currentRow = row[Object.keys(row)[0]]
@@ -66,7 +64,7 @@ export default function SlowSwitches() {
                             </tr>
                             </thead>
                             <tbody>
-                            {data.map((row: { [x: string]: string; }, index: Key | null | undefined) => (
+                            {data.map((row, index) => (
                             <tr key={index}>
                                 <td className={"td"} key={Object.keys(row)[0]}>
                                     {row[Object.keys(row)[0]] ? row[Object.keys(row)[0]].trim().split(",")[0] : "Alle Erreichbar"}
