@@ -1,4 +1,4 @@
-import Image from 'next/image';
+ import Image from 'next/image';
 import Navbar from './components/navbar';
 import APMonitor from "@/app/components/FetchData/APMonitor";
 import SlowSwitches from "@/app/components/FetchData/SlowSwitches";
