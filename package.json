@@ -1,12 +1,16 @@
 {
-  "name": "nextjs",
-  "version": "0.1.0",
+  "name": "bkwbdashboard",
+  "version": "1.1.0",
+  "main": "main.js",
   "private": true,
   "scripts": {
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "electron": "electron .",
+    "package": "electron-builder --dir",
+    "export-cordova": "next build && next export && next-cordova-export"
   },
   "dependencies": {
     "@headlessui/react": "^1.7.17",
@@ -14,10 +18,12 @@
     "axios": "^1.6.1",
     "cheerio": "^1.0.0-rc.12",
     "csv-parse": "^5.5.2",
+    "electron-is-dev": "^2.0.0",
     "iconv-lite": "^0.6.3",
     "install": "^0.13.0",
     "ldrs": "^1.0.1",
     "next": "^14.0.3",
+    "next-cordova-exporter": "^1.0.19",
     "next.js": "^1.0.3",
     "npm": "^10.2.4",
     "papaparse": "^5.4.1",
@@ -33,6 +39,8 @@
     "@types/react-dom": "^18",
     "autoprefixer": "^10",
     "daisyui": "^4.4.18",
+    "electron": "^28.0.0",
+    "electron-builder": "^24.9.1",
     "eslint": "^8",
     "eslint-config-next": "^14.0.3",
     "postcss": "^8",

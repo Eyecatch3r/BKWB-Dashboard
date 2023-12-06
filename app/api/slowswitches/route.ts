@@ -1,7 +1,7 @@
 import axios from 'axios';
 import {parse} from 'csv-parse';
 import iconv from 'iconv-lite';
-export const dynamic = "force-dynamic";
+export const revalidate = 0
 export async function GET() {
     try {
         // Check if the environment variables are defined

@@ -8,7 +8,7 @@ import IPStats from "@/app/components/FetchData/IPStats";
 export default function Home() {
 
     return (
-        <main className="flex flex-col justify-between min-h-screen p-4 sm:p-8 md:p-12 lg:p-16 dark:bg-gray-800">
+        <main className="flex flex-col bg-gray-50 justify-between min-h-screen p-4 sm:p-8 md:p-12 lg:p-16 dark:bg-gray-800">
             <div className="flex flex-wrap sm:flex-row min-[1345px]:flex-nowrap p-2 sm:p-4">
                 <a
                     href="/MonitorActivity"
