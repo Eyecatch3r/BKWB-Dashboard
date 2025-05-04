@@ -39,7 +39,7 @@ export default function navbar() {
     </Disclosure.Button>
     </div>
     <div className="flex flex-1 items-center justify-center sm:items-stretch sm:justify-start">
-    <div className="flex flex-shrink-0 items-center">
+    <div className="flex shrink-0 items-center">
     <img
         className="h-8 w-auto dark:invert"
     src="/BKWB logo.png"

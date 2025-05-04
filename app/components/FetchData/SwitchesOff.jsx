@@ -50,7 +50,7 @@ export default function SlowSwitches() {
             {data ? ( !data.error ? (
                 <div className="overflow-x-hidden">
                     {isEmpty(data) ? (<div>
-                        <table className={"min-w-full"}>
+                        <table className={"text-center table min-w-full"}>
                             <thead>
                             <tr>
                                 <th>ID</th>
@@ -98,7 +98,7 @@ export default function SlowSwitches() {
             ) : (
                 <div className={"flex justify-center"}> <l-mirage size="70" speed="2.5" color={!isDarkMode ? 'black' : 'white'}></l-mirage> </div>
             )): (<div className={"flex justify-center"}> <l-mirage size="70" speed="2.5" color={!isDarkMode ? 'black' : 'white'}></l-mirage> </div>)}
-            <div className={"flex justify-center"}> <l-mirage size="70" speed="2.5" color={!isDarkMode ? 'black' : 'white'}></l-mirage> </div>
+
         </div>
     );
 

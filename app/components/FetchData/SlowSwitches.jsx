@@ -2,6 +2,8 @@
 import {Key, useEffect, useState} from 'react';
 import useSWR from 'swr';
 
+// Assuming your l-mirage loader is available globally or via CDN script include
+
 const fetcher = async (url) => {
     const response = await fetch(url, {
         method: 'GET',
@@ -12,7 +14,14 @@ const fetcher = async (url) => {
     });
 
     if (!response.ok) {
-        throw new Error('Failed to fetch data');
+        const error = new Error('An error occurred while fetching the data.');
+        try {
+            error.info = await response.json();
+        } catch {
+            error.info = response.statusText;
+        }
+        error.status = response.status;
+        throw error;
     }
 
     return response.json();
@@ -21,70 +30,129 @@ const fetcher = async (url) => {
 export default function SlowSwitches() {
     const [isDarkMode, setIsDarkMode] = useState(true);
 
+    // Detect dark mode using useEffect (client-side only)
     useEffect(() => {
-        // Logic to detect user's preferred color scheme
-        const prefersDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches;
-        setIsDarkMode(prefersDarkMode);
-    }, []);
+        if (typeof window !== 'undefined') {
+            const prefersDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches;
+            setIsDarkMode(prefersDarkMode);
+            // Optional: listen for changes
+            const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
+            const handleChange = (e) => setIsDarkMode(e.matches);
+            mediaQuery.addEventListener('change', handleChange);
+            return () => mediaQuery.removeEventListener('change', handleChange);
+        }
+    }, []); // Empty dependency array ensures this runs only once on mount
 
-    const {data: data, error} = useSWR('/api/slowswitches', fetcher, {
-        revalidateOnMount: true, refreshInterval: 1000,
+
+    // Use useSWR's isLoading state
+    const { data, error, isLoading } = useSWR('/api/slowswitches', fetcher, {
+        revalidateOnMount: true,
+        refreshInterval: 5000, // Changed from 1000 to 5000 for consistency (adjust as needed)
+        // Consider adding fallbackData: [] if your API always returns an array
     });
 
+    // --- Conditional Rendering based on SWR states ---
+
     if (error) {
-        console.log(error);
-        return <div>Error fetching data</div>;
+        console.error('Error fetching data:', error);
+        return <div className="text-red-500 dark:text-red-400 p-4">Error fetching data: {error.status || 'Unknown error'}</div>; {/* Added padding */}
     }
 
+    if (isLoading) {
+        // Use the loader while loading
+        return (
+            <div className={"flex justify-center p-4"}>
+                <l-mirage size="70" speed="2.5" color={isDarkMode ? 'white' : 'black'}></l-mirage>
+            </div>
+        );
+    }
+
+    // After loading, check if data is valid and not empty
+    // Added check for Array.isArray(data)
+    if (!data || !Array.isArray(data) || data.length === 0) {
+        return (
+            <div className={"flex justify-center p-4"}>
+                <div className="text-center text-gray-500 dark:text-gray-400">No data available.</div>
+            </div>
+        );
+    }
+
+    // Assuming the data is an array of objects, and the first key holds the composite string
+    // Let's extract the composite string key name once, assuming it's consistent
+    // Add a safety check in case data[0] is undefined or null
+    const compositeStringKey = data.length > 0 && Object.keys(data[0]).length > 0 ? Object.keys(data[0])[0] : null;
+
+
+    // Calculate the count of items.
+    // Your original code used data.length - 1. This might mean the first row is a header/summary.
+    // If the API uses columns: true or columns: [...] in csv-parse, the header row should already be removed.
+    // Let's assume data.length is the correct number of data rows to display.
+    // If the API *does* send an extra header row you don't want,
+    // you might need to filter it out here or fix the API.
+    const itemCount = data.length; // Assuming all items in data are valid rows
+
+
     return (
-        <div className={"sm:grid grid-cols-1 content-center"}>
-            {data ? ( !data.error ? (
-                <div className="overflow-x-hidden">
-                    <table className={"min-w-full"}>
-                        <thead>
-                        <tr>
-                            <th>ID</th>
-                            <th>Raum</th>
-                            <th>Gebäude</th>
-                            <th>Latenz</th>
+        <div className={"sm:grid grid-cols-1 content-center p-4"}> {/* Added padding */}
+
+            {/* Table Display */}
+            {/* Changed overflow-x-hidden to overflow-x-auto */}
+            <div className="overflow-x-auto shadow-md rounded-lg">
+                <table className="min-w-full divide-y divide-gray-200 dark:divide-gray-700"> {/* Applied standard table styling */}
+                    <thead className="bg-gray-50 dark:bg-gray-800"> {/* Applied standard table header styling */}
+                    <tr>
+                        {/* Applied standard header cell styling */}
+                        <th scope="col" className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider dark:text-gray-300">ID</th>
+                        <th scope="col" className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider dark:text-gray-300">Raum</th>
+                        <th scope="col" className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider dark:text-gray-300">Gebäude</th>
+                        <th scope="col" className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider dark:text-gray-300">Latenz</th>
+                    </tr>
+                    </thead>
+                    <tbody className="bg-white divide-y divide-gray-200 dark:bg-gray-900 dark:divide-gray-700"> {/* Applied standard table body styling */}
+                    {data.map((row, index) => {
+                        // Get the full composite string from the row using the determined key name
+                        const compositeString = compositeStringKey ? row[compositeStringKey] : null;
+
+                        // Safely split the string to get individual parts
+                        const parts = compositeString ? String(compositeString).trim().split(" ") : [];
+
+                        // Safely extract parts using their expected indices
+                        // **This is the fragile part based on your data structure**
+                        const id = parts.length > 0 ? parts[0] : 'N/A';
+                        const raum = parts.length > 3 ? parts[3] : 'N/A';
+                        const gebaeude = parts.length > 8 ? parts[8] : 'N/A';
+                        const latency = parts.length > 14 ? parts[14] : 'N/A'; // Assuming latency is at index 14
+
+
+                        return (
+                        <tr key={id !== 'N/A' ? id : index}>
+                            {/* Applied standard cell styling */}
+                            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-gray-200">{id}</td>
+                            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-gray-200">{raum}</td>
+                            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-gray-200">{gebaeude}</td>
+                            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-gray-200">{latency}</td>
                         </tr>
-                        </thead>
-                        <tbody>
-                        {data.map((row, index) => (
-                            <tr key={index}>
-                                <td className={"td"} key={Object.keys(row)[0]}>
-                                    {row[Object.keys(row)[0]].trim().split(" ")[0]}
-                                </td>
-                                <td className={"td"} key={Object.keys(row)[0]}>
-                                    {row[Object.keys(row)[0]].trim().split(" ")[3]}
-                                </td>
-                                <td className={"td"} key={Object.keys(row)[0]}>
-                                    {row[Object.keys(row)[0]].trim().split(" ")[8]}
-                                </td>
-                                <td className={"td"} key={Object.keys(row)[0]}>
-                                    {row[Object.keys(row)[0]].trim().split(" ")[14]}
-                                </td>
-                            </tr>
-                        ))}
-                        </tbody>
-                    </table>
-                    <div className="inline-flex items-center justify-center w-full">
-                        <hr className="w-64 h-1 my-8 bg-gray-200 border-0 rounded dark:bg-gray-700"></hr>
-                    </div>
-                    <div className="flex justify-center">
-                        <div className="stats shadow">
-                            <div className="stat">
-                                <div className="stat-title">Anzahl</div>
-                                <div className="stat-value">{data.length-1}</div>
-                            </div>
-                        </div>
+                    );
+                    })}
+                    </tbody>
+                </table>
+            </div>
+
+            {/* Separator line */}
+            <div className="inline-flex items-center justify-center w-full">
+                <hr className="w-64 h-1 my-8 bg-gray-200 border-0 rounded dark:bg-gray-700"></hr>
+            </div>
+
+            {/* Count Stat */}
+            <div className="flex justify-center"> {/* Center the stats div */}
+                <div className="stats shadow-lg dark:shadow-gray-800"> {/* Applied standard stats styling */}
+                    <div className="stat place-items-center"> {/* Applied standard stat item styling */}
+                        <div className="stat-title text-gray-500 dark:text-gray-400">Anzahl Einträge</div> {/* Applied standard title styling, changed text */}
+                        <div className="stat-value text-blue-600 dark:text-blue-400">{itemCount}</div> {/* Applied standard value styling */}
                     </div>
                 </div>
-            ) : (
-                <div className={"flex justify-center"}> <l-mirage size="70" speed="2.5" color={!isDarkMode ? 'black' : 'white'}></l-mirage> </div>
-            )): (<div className={"flex justify-center"}> <l-mirage size="70" speed="2.5" color={!isDarkMode ? 'black' : 'white'}></l-mirage> </div>)}
-            <div className={"flex justify-center"}> <l-mirage size="70" speed="2.5" color={!isDarkMode ? 'black' : 'white'}></l-mirage> </div>
+            </div>
+
         </div>
     );
-
 }
