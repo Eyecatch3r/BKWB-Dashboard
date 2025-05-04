@@ -32,7 +32,7 @@ const fetcher = async (url) => {
 // Helper function to parse the timestamp string and format it
 function parseAndFormatTimestamp(timestampString) {
     if (!timestampString || typeof timestampString !== 'string') {
-        return 'Invalid Timestamp Data'; // Handle empty or non-string input
+        return ''; // Handle empty or non-string input
     }
 
     // Expected format: "HH:mm:ss DD.MM.YYYY"
@@ -185,9 +185,9 @@ export default function APMonitor() {
 
                         // Safely extract parts using their expected indices
                         // **This is the fragile part based on your data structure**
-                        const id = parts.length > 0 ? parts[0] : 'N/A';
-                        const raum = parts.length > 3 ? parts[3] : 'N/A';
-                        const gebaeude = parts.length > 8 ? parts[8] : 'N/A';
+                        const id = parts.length > 0 ? parts[0] : '';
+                        const raum = parts.length > 3 ? parts[3] : '';
+                        const gebaeude = parts.length > 8 ? parts[8] : '';
                         const timestampPart1 = parts.length > 14 ? parts[14] : null; // Time string
                         const timestampPart2 = parts.length > 15 ? parts[15] : null; // Date string
 

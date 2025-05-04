@@ -118,10 +118,10 @@ export default function SlowSwitches() {
 
                         // Safely extract parts using their expected indices
                         // **This is the fragile part based on your data structure**
-                        const id = parts.length > 0 ? parts[0] : 'N/A';
-                        const raum = parts.length > 3 ? parts[3] : 'N/A';
-                        const gebaeude = parts.length > 8 ? parts[8] : 'N/A';
-                        const latency = parts.length > 14 ? parts[14] : 'N/A'; // Assuming latency is at index 14
+                        const id = parts.length > 0 ? parts[0] : '';
+                        const raum = parts.length > 3 ? parts[3] : '';
+                        const gebaeude = parts.length > 8 ? parts[8] : '';
+                        const latency = parts.length > 14 ? parts[14] : ''; // Assuming latency is at index 14
 
 
                         return (
@@ -147,7 +147,7 @@ export default function SlowSwitches() {
                 <div className="stats shadow-lg dark:shadow-gray-800"> {/* Applied standard stats styling */}
                     <div className="stat place-items-center"> {/* Applied standard stat item styling */}
                         <div className="stat-title text-gray-500 dark:text-gray-400">Anzahl Einträge</div> {/* Applied standard title styling, changed text */}
-                        <div className="stat-value text-blue-600 dark:text-blue-400">{itemCount}</div> {/* Applied standard value styling */}
+                        <div className="stat-value text-blue-600 dark:text-blue-400">{itemCount-1}</div> {/* Applied standard value styling */}
                     </div>
                 </div>
             </div>
