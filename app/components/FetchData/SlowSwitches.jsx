@@ -98,8 +98,8 @@ export default function SlowSwitches() {
             {/* Table Display */}
             {/* Changed overflow-x-hidden to overflow-x-auto */}
             <div className="overflow-x-auto shadow-md rounded-lg">
-                <table className="min-w-full divide-y divide-gray-200 dark:divide-gray-700"> {/* Applied standard table styling */}
-                    <thead className="bg-gray-50 dark:bg-gray-800"> {/* Applied standard table header styling */}
+                <table className="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
+                    <thead className="bg-gray-50 dark:bg-gray-800">
                     <tr>
                         {/* Applied standard header cell styling */}
                         <th scope="col" className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider dark:text-gray-300">ID</th>
@@ -108,7 +108,7 @@ export default function SlowSwitches() {
                         <th scope="col" className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider dark:text-gray-300">Latenz</th>
                     </tr>
                     </thead>
-                    <tbody className="bg-white divide-y divide-gray-200 dark:bg-gray-900 dark:divide-gray-700"> {/* Applied standard table body styling */}
+                    <tbody className="bg-white divide-y divide-gray-200 dark:bg-gray-900 dark:divide-gray-700">
                     {data.map((row, index) => {
                         // Get the full composite string from the row using the determined key name
                         const compositeString = compositeStringKey ? row[compositeStringKey] : null;
@@ -126,7 +126,6 @@ export default function SlowSwitches() {
 
                         return (
                         <tr key={id !== 'N/A' ? id : index}>
-                            {/* Applied standard cell styling */}
                             <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-gray-200">{id}</td>
                             <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-gray-200">{raum}</td>
                             <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-gray-200">{gebaeude}</td>
