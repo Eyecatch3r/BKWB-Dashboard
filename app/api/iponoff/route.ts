@@ -21,7 +21,7 @@ export async function GET() {
         );
 
         const parsedData = await new Promise((resolve, reject) => {
-            const decodedData = iconv.decode(Buffer.from(response.data), 'utf-16le');
+            const decodedData = iconv.decode(Buffer.from(response.data),'utf8');
             parse(decodedData, {
                 relax_column_count: true,
                 // Use specific column names instead of columns: true
