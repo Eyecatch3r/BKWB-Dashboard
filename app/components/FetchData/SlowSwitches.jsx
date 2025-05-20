@@ -1,6 +1,7 @@
 'use client'
 import {Key, useEffect, useState} from 'react';
 import useSWR from 'swr';
+import { motion } from 'framer-motion';
 
 // Assuming your l-mirage loader is available globally or via CDN script include
 
@@ -47,8 +48,8 @@ export default function SlowSwitches() {
     // Use useSWR's isLoading state
     const { data, error, isLoading } = useSWR('/api/slowswitches', fetcher, {
         revalidateOnMount: true,
-        refreshInterval: 5000, // Changed from 1000 to 5000 for consistency (adjust as needed)
-        // Consider adding fallbackData: [] if your API always returns an array
+        refreshInterval: 10000, // 10 seconds
+        dedupingInterval: 10000 // Deduplicate requests for 10 seconds
     });
 
     // --- Conditional Rendering based on SWR states ---
@@ -125,13 +126,18 @@ export default function SlowSwitches() {
 
 
                         return (
-                        <tr key={id !== 'N/A' ? id : index}>
-                            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-gray-200">{id}</td>
-                            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-gray-200">{raum}</td>
-                            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-gray-200">{gebaeude}</td>
-                            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-gray-200">{latency}</td>
-                        </tr>
-                    );
+                            <motion.tr
+                                key={id !== 'N/A' ? id : index}
+                                initial={{ opacity: 0, y: 20 }}
+                                animate={{ opacity: 1, y: 0 }}
+                                transition={{ duration: 0.4, delay: index * 0.05 }}
+                            >
+                                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-gray-200">{id}</td>
+                                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-gray-200">{raum}</td>
+                                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-gray-200">{gebaeude}</td>
+                                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-gray-200">{latency}</td>
+                            </motion.tr>
+                        );
                     })}
                     </tbody>
                 </table>
@@ -144,12 +150,17 @@ export default function SlowSwitches() {
 
             {/* Count Stat */}
             <div className="flex justify-center"> {/* Center the stats div */}
-                <div className="stats shadow-lg dark:shadow-gray-800"> {/* Applied standard stats styling */}
+                <motion.div
+                    className="stats shadow-lg dark:shadow-gray-800"
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.5, delay: 0.2 }}
+                >
                     <div className="stat place-items-center"> {/* Applied standard stat item styling */}
                         <div className="stat-title text-gray-500 dark:text-gray-400">Anzahl Einträge</div> {/* Applied standard title styling, changed text */}
                         <div className="stat-value text-blue-600 dark:text-blue-400">{itemCount-1}</div> {/* Applied standard value styling */}
                     </div>
-                </div>
+                </motion.div>
             </div>
 
         </div>

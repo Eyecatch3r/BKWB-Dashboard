@@ -1,8 +1,17 @@
 import axios from 'axios';
 import {parse} from 'csv-parse';
 import iconv from 'iconv-lite';
+
+let cache = { data: null, timestamp: 0 };
+const CACHE_DURATION = 30 * 1000; // 30 seconds
+
 export const revalidate = 0
 export async function GET() {
+    const now = Date.now();
+    if (cache.data && (now - cache.timestamp < CACHE_DURATION)) {
+        return Response.json(cache.data);
+    }
+    console.log(`[SwitchesOff API] Invoked at ${new Date().toISOString()}`);
     try {
         // Check if the environment variables are defined
         if (!process.env.BKWB_USERNAME || !process.env.BKWB_PASSWORD) {
@@ -30,7 +39,7 @@ export async function GET() {
                 }
             });
         });
-
+        cache = { data: parsedData, timestamp: now };
         return Response.json(parsedData);
     } catch (error: any) {
         console.error('Error fetching or parsing CSV:', error.message);

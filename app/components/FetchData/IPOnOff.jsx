@@ -1,6 +1,7 @@
 'use client'
 import {ReactElement, JSXElementConstructor, ReactNode, ReactPortal, Key, useState, useEffect, useMemo} from 'react';
 import useSWR from 'swr';
+import { motion } from 'framer-motion';
 
 // Assuming your l-mirage loader is available globally or via CDN script include
 
@@ -33,8 +34,8 @@ export default function IPOnOff() {
 
     const { data, error, isLoading } = useSWR('/api/iponoff', fetcher, {
         revalidateOnMount: true,
-        refreshInterval: 5000,
-        // Consider adding fallbackData: [] if your API always returns an array
+        refreshInterval: 10000, // 10 seconds
+        dedupingInterval: 10000 // Deduplicate requests for 10 seconds
     });
 
     // Detect dark mode using useEffect (client-side only)
@@ -105,7 +106,12 @@ export default function IPOnOff() {
         <div className={"sm:grid grid-cols-1 content-center p-4"}>
 
             {/* Table Display */}
-            <div className="overflow-x-auto shadow-md rounded-lg">
+            <motion.div
+                className="overflow-x-auto shadow-md rounded-lg"
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5 }}
+            >
                 <table className="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
                     <thead className="bg-gray-50 dark:bg-gray-800">
                     <tr>
@@ -119,7 +125,12 @@ export default function IPOnOff() {
                     <tbody className="bg-white divide-y divide-gray-200 dark:bg-gray-900 dark:divide-gray-700">
                     {/* Map directly over the data rows received from the API */}
                     {data.map((row, index) => (
-                        <tr key={index}>
+                        <motion.tr
+                            key={index}
+                            initial={{ opacity: 0, y: 20 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            transition={{ duration: 0.4, delay: index * 0.05 }}
+                        >
                             <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-gray-200">
                                 {/* Access using the new named keys */}
                                 {row.location}
@@ -140,11 +151,11 @@ export default function IPOnOff() {
                                 {/* Access using the new named keys */}
                                 {row.end_time}
                             </td>
-                        </tr>
+                        </motion.tr>
                     ))}
                     </tbody>
                 </table>
-            </div>
+            </motion.div>
         </div>
     );
 }

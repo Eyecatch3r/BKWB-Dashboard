@@ -1,6 +1,7 @@
 'use client'
 import {ReactElement, JSXElementConstructor, ReactNode, ReactPortal, Key, useState, useEffect, useMemo} from 'react';
 import useSWR from 'swr';
+import { motion } from 'framer-motion';
 
 // Assuming your l-mirage loader is available globally or via CDN script include
 // If using a library like ldrs, you might still need to register it:
@@ -39,8 +40,8 @@ export default function IPStats() {
     // Use useSWR's isLoading state
     const { data, error, isLoading } = useSWR('/api/iponoff', fetcher, {
         revalidateOnMount: true,
-        refreshInterval: 5000,
-        // Consider adding fallbackData: [] if your API always returns an array
+        refreshInterval: 10000, // 10 seconds
+        dedupingInterval: 10000 // Deduplicate requests for 10 seconds
     });
 
     // State for the calculated totals
@@ -127,39 +128,44 @@ export default function IPStats() {
         <div className={"sm:grid grid-cols-1 content-center p-4"}> {/* Added padding */}
 
             <div className={"flex justify-center mb-4"}>
-                {/* Using 'stats' classes, assuming they are provided by your CSS framework (e.g., DaisyUI) */}
-                <div className="stats stats-vertical shadow-lg dark:shadow-gray-800"> {/* Added shadow */}
-
+                <motion.div
+                    className="stats stats-vertical shadow-lg dark:shadow-gray-800"
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.5 }}
+                >
                     <div className="stat place-items-center">
-                        <div className="stat-title text-gray-500 dark:text-gray-400">Devices On</div> {/* Added text color */}
-                        <div className="stat-value text-green-600 dark:text-green-400">{totalIPon}</div> {/* Added text color */}
+                        <div className="stat-title text-gray-500 dark:text-gray-400">Devices On</div>
+                        <div className="stat-value text-green-600 dark:text-green-400">{totalIPon}</div>
                     </div>
-
                     <div className="stat place-items-center">
-                        <div className="stat-title text-gray-500 dark:text-gray-400">Devices Off</div> {/* Added text color */}
-                        <div className="stat-value text-red-600 dark:text-red-400">{totalIPoff}</div> {/* Added text color */}
+                        <div className="stat-title text-gray-500 dark:text-gray-400">Devices Off</div>
+                        <div className="stat-value text-red-600 dark:text-red-400">{totalIPoff}</div>
                     </div>
-                </div>
+                </motion.div>
             </div>
 
             {/* Percentage Stat */}
-            <div className={"flex justify-center mb-4"}>
-                <div className="stats shadow-lg dark:shadow-gray-800"> {/* Added shadow */}
-                    <div className="stat place-items-center"> {/* Centered items */}
-                        <div className="stat-title text-gray-500 mb-4 dark:text-gray-400">Percentage On</div> {/* Added text color */}
-                        {/* Ensure radial-progress class and --value style are supported by your CSS framework */}
+            <motion.div
+                className="flex justify-center mb-4"
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5, delay: 0.2 }}
+            >
+                <div className="stats shadow-lg dark:shadow-gray-800">
+                    <div className="stat place-items-center">
+                        <div className="stat-title text-gray-500 mb-4 dark:text-gray-400">Percentage On</div>
                         <div className="stat-value">
                             <div className="radial-progress text-xl text-primary"
-                                // Style needs to be an object in React JSX
-                                 style={{ "--value": percentageIPOn, "--size": "5rem" }} // Added size for consistency
-                                 role="progressbar"
+                                style={{ "--value": percentageIPOn, "--size": "5rem" }}
+                                role="progressbar"
                             >
                                 {percentageIPOn}%
                             </div>
                         </div>
                     </div>
                 </div>
-            </div>
+            </motion.div>
 
             <div className="inline-flex items-center justify-center w-full">
                 <hr className="w-64 h-1 my-8 bg-gray-200 border-0 rounded dark:bg-gray-700"></hr>

@@ -4,7 +4,15 @@ import iconv from 'iconv-lite';
 
 export const revalidate = 0; // Consider adding const revalidate = 59; or similar if you want client-side caching between fetches
 
+let cache = { data: null, timestamp: 0 };
+const CACHE_DURATION = 30 * 1000; // 30 seconds
+
 export async function GET() {
+    const now = Date.now();
+    if (cache.data && (now - cache.timestamp < CACHE_DURATION)) {
+        return Response.json(cache.data);
+    }
+    console.log(`[IPOnOff API] Invoked at ${new Date().toISOString()}`);
     try {
         if (!process.env.BKWB_USERNAME || !process.env.BKWB_PASSWORD) {
             throw new Error('BKWB_USERNAME or BKWB_PASSWORD is not defined');
@@ -43,10 +51,7 @@ export async function GET() {
                 }
             });
         });
-
-        // Log the parsed data structure to verify in server logs
-        console.log("API Parsed Data Structure:", JSON.stringify(parsedData ? parsedData.slice(0, 2) : null, null, 2)); // Log first 2 rows as sample
-
+        cache = { data: parsedData, timestamp: now };
         return Response.json(parsedData);
 
     } catch (error: any) {

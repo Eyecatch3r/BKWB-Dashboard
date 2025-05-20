@@ -2,6 +2,7 @@
 import useSWR from 'swr';
 // import horizontalLine from "@/app/components/horizontalLine"; // Not used, can remove if not needed
 import {Key, useEffect, useState, useMemo} from 'react'; // Added useMemo
+import { motion } from 'framer-motion';
 
 // Assuming your l-mirage loader is available globally or via CDN script include
 
@@ -104,7 +105,8 @@ export default function APMonitor() {
     // Use useSWR's isLoading state
     const { data, error, isLoading } = useSWR('/api/apmonitor', fetcher, {
         revalidateOnMount: true,
-        refreshInterval: 5000 // Changed interval from 0 to 5000 (5 seconds) for refreshing data
+        refreshInterval: 10000, // 10 seconds
+        dedupingInterval: 10000 // Deduplicate requests for 10 seconds
     });
 
     // Detect dark mode using useEffect (client-side only)
@@ -196,18 +198,17 @@ export default function APMonitor() {
 
 
                         return (
-                            // Use a unique key for the row, ideally the ID if it's unique
-                            // Fallback to index if ID might not be unique or parts are missing
-                            <tr key={id !== 'N/A' ? id : index}>
-                                {/* Removed key from td elements */}
+                            <motion.tr
+                                key={id !== 'N/A' ? id : index}
+                                initial={{ opacity: 0, y: 20 }}
+                                animate={{ opacity: 1, y: 0 }}
+                                transition={{ duration: 0.4, delay: index * 0.05 }}
+                            >
                                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-gray-200">{id}</td>
                                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-gray-200">{raum}</td>
                                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-gray-200">{gebaeude}</td>
-                                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-gray-200">
-                                    {/* Pass the combined timestamp string to the parsing function */}
-                                    {parseAndFormatTimestamp(fullTimestampString)}
-                                </td>
-                            </tr>
+                                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-gray-200">{parseAndFormatTimestamp(fullTimestampString)}</td>
+                            </motion.tr>
                         );
                     })}
                     </tbody>
@@ -221,12 +222,17 @@ export default function APMonitor() {
 
             {/* Count Stat */}
             <div className="inline-flex items-center justify-center w-full">
-                <div className="stats shadow-lg dark:shadow-gray-800"> {/* Added shadow */}
+                <motion.div
+                    className="stats shadow-lg dark:shadow-gray-800"
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.5, delay: 0.2 }}
+                >
                     <div className="stat place-items-center">
-                        <div className="stat-title text-gray-500 dark:text-gray-400">Anzahl Einträge</div> {/* More descriptive title */}
-                        <div className="stat-value text-blue-600 dark:text-blue-400">{itemCount}</div> {/* Added text color */}
+                        <div className="stat-title text-gray-500 dark:text-gray-400">Anzahl Einträge</div>
+                        <div className="stat-value text-blue-600 dark:text-blue-400">{itemCount}</div>
                     </div>
-                </div>
+                </motion.div>
             </div>
 
             {/* Removed the extra loader divs */}
