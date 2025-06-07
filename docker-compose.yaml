@@ -1,0 +1,29 @@
+# docker-compose.yml
+
+version: '3.8' # Specifies the file format version
+
+services:
+  # This is the name of your service. You can call it 'web', 'app', etc.
+  next-app:
+    # Tells Compose to build an image from the Dockerfile in the current directory ('.').
+    # The resulting image will be used for this service.
+    build: .
+
+    # Gives the running container a static, predictable name.
+    # This is helpful for running specific commands on it.
+    container_name: my-bkwb-container
+
+    # This is the declarative equivalent of the `docker run -p` flag.
+    # It maps port 3000 on your host machine to port 3000 in the container.
+    ports:
+      - "3000:3000"
+
+    # --- This is the key part for your request ---
+    # Tells Compose to load environment variables from the specified file.
+    # Each KEY=VALUE pair in the file will be available inside the container.
+    env_file:
+      - ./.env.local
+
+    # This ensures that if you stop the container (e.g., with Ctrl+C),
+    # it restarts automatically. Useful for development.
+    restart: unless-stopped
